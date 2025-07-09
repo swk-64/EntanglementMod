@@ -1,0 +1,13 @@
+{
+  "itemGroup.entanglement": "Example Mod Tab",
+  "block.entanglement.example_block": "Example Block",
+  "item.entanglement.example_item": "Example Item",
+
+  "entanglement.configuration.title": "Entanglement Configs",
+  "entanglement.configuration.section.entanglement.common.toml": "Entanglement Configs",
+  "entanglement.configuration.section.entanglement.common.toml.title": "Entanglement Configs",
+  "entanglement.configuration.items": "Item List",
+  "entanglement.configuration.logDirtBlock": "Log Dirt Block",
+  "entanglement.configuration.magicNumberIntroduction": "Magic Number Text",
+  "entanglement.configuration.magicNumber": "Magic Number"
+}
