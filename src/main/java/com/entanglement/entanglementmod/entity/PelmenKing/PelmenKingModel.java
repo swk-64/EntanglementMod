@@ -12,8 +12,6 @@ import net.neoforged.neoforge.client.entity.animation.json.AnimationHolder;
 import static com.entanglement.entanglementmod.Entanglement.MODID;
 
 public class PelmenKingModel extends EntityModel<PelmenKingRenderState> {
-    //public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "pelmenking"), "main");
-
 
     private final ModelPart pelmen;
     private final ModelPart crown;
@@ -28,6 +26,7 @@ public class PelmenKingModel extends EntityModel<PelmenKingRenderState> {
 
         this.pelmen = root.getChild("pelmen");
         this.crown = root.getChild("crown");
+
 
         this.universal = PELMEN_UNIVERSAL_ANIMATION.get().bake(root);
     }
@@ -74,15 +73,6 @@ public class PelmenKingModel extends EntityModel<PelmenKingRenderState> {
     @Override
     public void setupAnim(PelmenKingRenderState state) {
         super.setupAnim(state);
-
-        this.universal.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, 1, 1);
-        //this.universal.applyStatic();
+        this.universal.applyStatic();
     }
-//
-//    @Override
-//    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-//        pelmen.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-//        crown.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-//    }
-
 }

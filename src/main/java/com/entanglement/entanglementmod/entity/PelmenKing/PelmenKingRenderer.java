@@ -16,8 +16,6 @@ public class PelmenKingRenderer extends MobRenderer<PelmenKing, PelmenKingRender
         super(context, new PelmenKingModel(context.bakeLayer(PELMEN_AND_CROWN_LAYER)), 0.5f);
         // Add the layer. Get the EntityModelSet from the context. For the purpose of the example,
         // we ignore that the render layer renders the "base" model, this would be a different model in practice.
-
-        //this.addLayer(new PelmenKingModelLayer(this, context.getModelSet()));
     }
     // Tell the render engine how to create a new entity render state.
     @Override
@@ -28,6 +26,7 @@ public class PelmenKingRenderer extends MobRenderer<PelmenKing, PelmenKingRender
     @Override
     public void extractRenderState(PelmenKing entity, PelmenKingRenderState state, float partialTick) {
         super.extractRenderState(entity, state, partialTick);
+
     }
 
     // Update the render state by copying the needed values from the passed entity to the passed state.
@@ -35,14 +34,10 @@ public class PelmenKingRenderer extends MobRenderer<PelmenKing, PelmenKingRender
     // based on the generic types that have been passed to the supertype.
     @Override
     public void render(PelmenKingRenderState state, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        // Calling super will automatically render the layer for you.
         super.render(state, poseStack, bufferSource, packedLight);
-        // Then, do custom rendering here, if applicable.
+
     }
 
-    // getTextureLocation is an abstract method in LivingEntityRenderer that we need to override.
-    // The texture path is relative to textures/entity, so in this example, the texture should be located at
-    // assets/examplemod/textures/entity/example_entity.png. The texture will then be supplied to and used by the model.
     @Override
     public ResourceLocation getTextureLocation(PelmenKingRenderState state) {
         return ResourceLocation.fromNamespaceAndPath(MODID, "textures/entity/pelmen_king/pelmen_king.png"); // ??? reads data from

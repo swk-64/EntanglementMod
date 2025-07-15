@@ -72,30 +72,16 @@ public class Entanglement {
                     PELMEN_KING_ENTITY.get(),
                     properties
             )
-//            Item::new, // The factory that the properties will be passed into.
-//            new Item.Properties() // The properties to use.
     );
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public Entanglement(IEventBus modEventBus, ModContainer modContainer) {
-        // Register the commonSetup method for modloading
-
-
-        //modEventBus.addListener(this::commonSetup);
-
-//        // Register the Deferred Register to the mod event bus so blocks get registered
-//        BLOCKS.register(modEventBus);
-
 
         // Register the Deferred Register to the mod event bus so items get registered
         ITEMS.register(modEventBus);
 
-
         ENTITY_TYPES.register(modEventBus);
-
-//        // Register the Deferred Register to the mod event bus so tabs get registered
-//        CREATIVE_MODE_TABS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Entanglement) to respond directly to events.
@@ -104,26 +90,7 @@ public class Entanglement {
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
-
-        //modEventBus.addListener(this::createDefaultAttributes);
-
-        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-
-        //modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
-
-//    private void commonSetup(FMLCommonSetupEvent event) {
-//        // Some common setup code
-//        LOGGER.info("HELLO FROM COMMON SETUP");
-//
-//        if (Config.LOG_DIRT_BLOCK.getAsBoolean()) {
-//            LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
-//        }
-//
-//        LOGGER.info("{}{}", Config.MAGIC_NUMBER_INTRODUCTION.get(), Config.MAGIC_NUMBER.getAsInt());
-//
-//        Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
-//    }
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
@@ -134,11 +101,10 @@ public class Entanglement {
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
 
-
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+        LOGGER.info("Modded server starting");
     }
 
     @EventBusSubscriber(modid = Entanglement.MODID)
@@ -147,6 +113,7 @@ public class Entanglement {
         public static void createDefaultAttributes(EntityAttributeCreationEvent event) {
             event.put(PELMEN_KING_ENTITY.get(),
                     Monster.createMonsterAttributes()
+                            .add(Attributes.MOVEMENT_SPEED, 0.1)
                             .build()
             );
         }
