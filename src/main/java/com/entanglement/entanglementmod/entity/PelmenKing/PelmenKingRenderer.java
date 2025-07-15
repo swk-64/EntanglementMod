@@ -45,6 +45,6 @@ public class PelmenKingRenderer extends MobRenderer<PelmenKing, PelmenKingRender
     // assets/examplemod/textures/entity/example_entity.png. The texture will then be supplied to and used by the model.
     @Override
     public ResourceLocation getTextureLocation(PelmenKingRenderState state) {
-        return ResourceLocation.fromNamespaceAndPath(MODID, "pelmen_king");
+        return ResourceLocation.fromNamespaceAndPath(MODID, "textures/entity/pelmen_king/pelmen_king.png"); // ??? reads data from
     }
 }

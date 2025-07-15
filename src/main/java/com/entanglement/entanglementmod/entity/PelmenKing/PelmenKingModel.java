@@ -19,7 +19,7 @@ public class PelmenKingModel extends EntityModel<PelmenKingRenderState> {
     private final ModelPart crown;
 
     public static final AnimationHolder PELMEN_UNIVERSAL_ANIMATION =
-            Model.getAnimation(ResourceLocation.fromNamespaceAndPath(MODID, "pelmen_universal"));
+            Model.getAnimation(ResourceLocation.fromNamespaceAndPath(MODID, "neoforge/animations/entity/pelmen_universal.json"));
 
     private final KeyframeAnimation universal;
 
@@ -76,7 +76,7 @@ public class PelmenKingModel extends EntityModel<PelmenKingRenderState> {
         super.setupAnim(state);
 
         this.universal.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, 1, 1);
-        this.universal.applyStatic();
+        //this.universal.applyStatic();
     }
 //
 //    @Override
