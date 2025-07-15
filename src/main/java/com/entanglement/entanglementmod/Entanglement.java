@@ -1,22 +1,19 @@
 package com.entanglement.entanglementmod;
 
+import com.entanglement.entanglementmod.entity.PelmenKing.PelmenKing;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.SpawnEggItem;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -26,10 +23,10 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.function.Supplier;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(Entanglement.MODID)
@@ -38,30 +35,61 @@ public class Entanglement {
     public static final String MODID = "entanglement";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
-    // Create a Deferred Register to hold Blocks which will all be registered under the "entanglement" namespace
-    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
+
+
+//    // Create a Deferred Register to hold Blocks which will all be registered under the "entanglement" namespace
+//    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
+
+
+public static final DeferredRegister.Entities ENTITY_TYPES = DeferredRegister.createEntities(MODID);
+
+    public static final Supplier<EntityType<PelmenKing>> PELMEN_KING_ENTITY =
+            ENTITY_TYPES.registerEntityType("pelmen_king", PelmenKing::new, MobCategory.MONSTER);
+
+    public static final ModelLayerLocation PELMEN_AND_CROWN_LAYER = new ModelLayerLocation(
+            // Should be the name of the entity this layer belongs to.
+            // May be more generic if this layer can be used on multiple entities.
+            ResourceLocation.fromNamespaceAndPath(MODID, "pelmen_king"),
+            // The name of the layer itself. Should be main for the entity's base model,
+            // and a more descriptive name (e.g. "wings") for more specific layers.
+            "main"
+    );
+
+
     // Create a Deferred Register to hold Items which will all be registered under the "entanglement" namespace
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
-    // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "entanglement" namespace
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
-    // Creates a new Block with the id "entanglement:example_block", combining the namespace and path
-    public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
-    // Creates a new BlockItem with the id "entanglement:example_block", combining the namespace and path
-    public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
+    public static final DeferredItem<Item> PELMEN_KING_SPAWN_EGG = ITEMS.registerItem(
+            "pelmen_king_summon_egg",
+            properties -> new SpawnEggItem(
+                    PELMEN_KING_ENTITY.get(),
+                    properties
+            )
+//            Item::new, // The factory that the properties will be passed into.
+//            new Item.Properties() // The properties to use.
+    );
 
-    // Creates a new food item with the id "entanglement:example_id", nutrition 1 and saturation 2
-    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder()
-            .alwaysEdible().nutrition(1).saturationModifier(2f).build()));
+//    // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "entanglement" namespace
+//    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
-    // Creates a creative tab with the id "entanglement:example_tab" for the example item, that is placed after the combat tab
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.entanglement")) //The language key for the title of your CreativeModeTab
-            .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
-            .displayItems((parameters, output) -> {
-                output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
-            }).build());
+//    // Creates a new Block with the id "entanglement:example_block", combining the namespace and path
+//    public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
+//    // Creates a new BlockItem with the id "entanglement:example_block", combining the namespace and path
+//    public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
+
+
+//    // Creates a new food item with the id "entanglement:example_id", nutrition 1 and saturation 2
+//    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder()
+//            .alwaysEdible().nutrition(1).saturationModifier(2f).build()));
+
+//    // Creates a creative tab with the id "entanglement:example_tab" for the example item, that is placed after the combat tab
+//    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
+//            .title(Component.translatable("itemGroup.entanglement")) //The language key for the title of your CreativeModeTab
+//            .withTabsBefore(CreativeModeTabs.COMBAT)
+//            .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
+//            .displayItems((parameters, output) -> {
+//                output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
+//            }).build());
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
@@ -69,12 +97,18 @@ public class Entanglement {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
-        // Register the Deferred Register to the mod event bus so blocks get registered
-        BLOCKS.register(modEventBus);
+//        // Register the Deferred Register to the mod event bus so blocks get registered
+//        BLOCKS.register(modEventBus);
+
+
         // Register the Deferred Register to the mod event bus so items get registered
         ITEMS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so tabs get registered
-        CREATIVE_MODE_TABS.register(modEventBus);
+
+
+        ENTITY_TYPES.register(modEventBus);
+
+//        // Register the Deferred Register to the mod event bus so tabs get registered
+//        CREATIVE_MODE_TABS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Entanglement) to respond directly to events.
@@ -103,8 +137,8 @@ public class Entanglement {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(EXAMPLE_BLOCK_ITEM);
+        if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+            event.accept(PELMEN_KING_SPAWN_EGG);
         }
     }
 
@@ -114,4 +148,5 @@ public class Entanglement {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
     }
+
 }

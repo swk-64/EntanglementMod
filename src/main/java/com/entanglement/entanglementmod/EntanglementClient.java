@@ -1,5 +1,7 @@
 package com.entanglement.entanglementmod;
 
+import com.entanglement.entanglementmod.entity.PelmenKing.PelmenKingModel;
+import com.entanglement.entanglementmod.entity.PelmenKing.PelmenKingRenderer;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -7,8 +9,10 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+
 
 // This class will not load on dedicated servers. Accessing client side code from here is safe.
 @Mod(value = Entanglement.MODID, dist = Dist.CLIENT)
@@ -28,4 +32,16 @@ public class EntanglementClient {
         Entanglement.LOGGER.info("HELLO FROM CLIENT SETUP");
         Entanglement.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
     }
+
+    @SubscribeEvent // on the mod event bus only on the physical client
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        // Add our layer here.
+        event.registerLayerDefinition(Entanglement.PELMEN_AND_CROWN_LAYER, PelmenKingModel::createBodyLayer); // ??? initially there was unexisting ".add" method ???
+    }
+    @SubscribeEvent // on the mod event bus only on the physical client
+    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(Entanglement.PELMEN_KING_ENTITY.get(), PelmenKingRenderer::new);
+    }
+
+
 }
